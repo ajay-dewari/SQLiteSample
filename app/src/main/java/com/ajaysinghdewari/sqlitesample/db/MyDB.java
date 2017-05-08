@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.ajaysinghdewari.sqlitesample.models.UsersPojo;
+import com.ajaysinghdewari.sqlitesample.models.Users;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,18 +16,14 @@ import java.util.List;
 
 public class MyDB {
 
-    private static final String TAG = MyDB.class.getSimpleName();
-    private static final String DATABASE_NAME = "Song";
-    private static final int DATABASE_VERSION = 1;
     private DBHelper mHelper;
-    private Context mContext;
-    private SQLiteDatabase db;
 
     public MyDB(Context context){
         mHelper=new DBHelper(context);
     }
 
     public void clearDB() {
+        SQLiteDatabase db=mHelper.getWritableDatabase();
         try {
             db.delete(DBHelper.TABLE_USERS, null, null);
         } catch (Exception e) {
@@ -39,8 +35,8 @@ public class MyDB {
     /*=======================================CRUD Operations (Create, Read, Update and Delete)=====================================*/
 
     // Adding new user
-    public void addUser(UsersPojo user) {
-        db =mHelper.getWritableDatabase();
+    public void addUser(Users user) {
+        SQLiteDatabase db =mHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DBHelper.KEY_NAME, user.get_name());
         values.put(DBHelper.KEY_AGE, user.get_age());
@@ -52,7 +48,7 @@ public class MyDB {
 
 
     // Getting single user
-    public UsersPojo getUser(int id) {
+    public Users getUser(int id) {
         SQLiteDatabase db = mHelper.getReadableDatabase();
 
         Cursor cursor = db.query(DBHelper.TABLE_USERS, new String[] { DBHelper.KEY_ID,DBHelper.KEY_AGE,
@@ -61,15 +57,15 @@ public class MyDB {
         if (cursor != null)
             cursor.moveToFirst();
 
-        UsersPojo user = new UsersPojo(Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(0)),
+        Users user = new Users(Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(0)),
                 cursor.getString(1), cursor.getString(2));
 
         return user;
     }
 
     // Getting All Users
-    public List<UsersPojo> getAllUsers() {
-        List<UsersPojo> userList = new ArrayList<UsersPojo>();
+    public List<Users> getAllUsers() {
+        List<Users> userList = new ArrayList<Users>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + DBHelper.TABLE_USERS;
 
@@ -79,7 +75,7 @@ public class MyDB {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                UsersPojo contact = new UsersPojo();
+                Users contact = new Users();
                 contact.set_id(Integer.parseInt(cursor.getString(0)));
                 contact.set_age(Integer.parseInt(cursor.getString(1)));
                 contact.set_name(cursor.getString(2));
@@ -104,7 +100,7 @@ public class MyDB {
     }
 
     // Updating single user
-    public int updateUser(UsersPojo user) {
+    public int updateUser(Users user) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -118,7 +114,7 @@ public class MyDB {
 
 
     // Deleting single contact
-    public void deleteUser(UsersPojo contact) {
+    public void deleteUser(Users contact) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         db.delete(DBHelper.TABLE_USERS, DBHelper.KEY_ID + " = ?",
                 new String[] { String.valueOf(contact.get_id()) });

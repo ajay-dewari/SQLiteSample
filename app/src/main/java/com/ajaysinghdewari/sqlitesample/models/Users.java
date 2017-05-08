@@ -4,15 +4,15 @@ package com.ajaysinghdewari.sqlitesample.models;
  * Created by justdial on 8/5/17.
  */
 
-public class UsersPojo {
+public class Users {
 
     private int _id, _age;
     private String _name, _last_name;
 
-    public UsersPojo() {
+    public Users() {
     }
 
-    public UsersPojo(int _id, int _age, String _name, String _last_name) {
+    public Users(int _id, int _age, String _name, String _last_name) {
         this._id = _id;
         this._age = _age;
         this._name = _name;
