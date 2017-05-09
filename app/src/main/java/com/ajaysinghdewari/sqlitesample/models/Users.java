@@ -6,41 +6,41 @@ package com.ajaysinghdewari.sqlitesample.models;
 
 public class Users {
 
-    private int _id, _age;
-    private String _name, _last_name;
+    private int id, age;
+    private String name, _last_name;
 
     public Users() {
     }
 
     public Users(int _id, int _age, String _name, String _last_name) {
-        this._id = _id;
-        this._age = _age;
-        this._name = _name;
+        this.id = _id;
+        this.age = _age;
+        this.name = _name;
         this._last_name = _last_name;
     }
 
     public int get_id() {
-        return _id;
+        return id;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void set_id(int id) {
+        this.id = id;
     }
 
     public int get_age() {
-        return _age;
+        return age;
     }
 
     public void set_age(int _age) {
-        this._age = _age;
+        this.age = _age;
     }
 
     public String get_name() {
-        return _name;
+        return name;
     }
 
     public void set_name(String _name) {
-        this._name = _name;
+        this.name = _name;
     }
 
     public String get_last_name() {

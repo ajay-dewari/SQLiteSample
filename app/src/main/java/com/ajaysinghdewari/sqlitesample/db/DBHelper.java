@@ -26,16 +26,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //table Columns names
     protected static final String KEY_ID = "id";
-    protected static final String KEY_NAME = "f_name";
+    protected static final String KEY_NAME = "name";
     protected static final String KEY_LAST_NAME = "l_name";
     protected static final String KEY_AGE = "age";
 
 
     public DBHelper(Context context) {
-//        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        super(context, Environment.getExternalStorageDirectory()
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        /*super(context, Environment.getExternalStorageDirectory()
                 + File.separator + FILE_DIR
-                + File.separator + DATABASE_NAME, null, DATABASE_VERSION);
+                + File.separator + DATABASE_NAME, null, DATABASE_VERSION);*/
     }
 
     @Override
