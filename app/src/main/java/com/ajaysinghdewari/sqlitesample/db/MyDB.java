@@ -36,14 +36,20 @@ public class MyDB {
 
     // Adding new user
     public void addUser(Users user) {
-        SQLiteDatabase db =mHelper.getWritableDatabase();
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        try {
+            db.beginTransaction();
         ContentValues values = new ContentValues();
         values.put(DBHelper.KEY_NAME, user.get_name());
         values.put(DBHelper.KEY_AGE, user.get_age());
 
         // Inserting Row
         db.insert(DBHelper.TABLE_USERS, null, values);
-        db.close(); // Closing database connection
+    }finally {
+            db.endTransaction();
+            db.close(); // Closing database connection
+        }
+
     }
 
 
@@ -57,9 +63,9 @@ public class MyDB {
         if (cursor != null)
             cursor.moveToFirst();
 
-        Users user = new Users(Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2));
-
+        Users user = new Users(Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),
+                cursor.getString(2), cursor.getString(3));
+        cursor.close();
         return user;
     }
 
@@ -79,11 +85,12 @@ public class MyDB {
                 contact.set_id(Integer.parseInt(cursor.getString(0)));
                 contact.set_age(Integer.parseInt(cursor.getString(1)));
                 contact.set_name(cursor.getString(2));
-                contact.set_last_name(cursor.getString(2));
+                contact.set_last_name(cursor.getString(3));
                 userList.add(contact);
             } while (cursor.moveToNext());
         }
-
+        cursor.close();
+        db.close();
         return userList;
     }
 
@@ -94,8 +101,8 @@ public class MyDB {
         SQLiteDatabase db = mHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         cursor.close();
+        db.close();
 
-        // return count
         return cursor.getCount();
     }
 
