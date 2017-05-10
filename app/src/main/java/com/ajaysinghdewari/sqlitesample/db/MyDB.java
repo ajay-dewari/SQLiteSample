@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import com.ajaysinghdewari.sqlitesample.models.Users;
 
@@ -17,8 +18,10 @@ import java.util.List;
 public class MyDB {
 
     private DBHelper mHelper;
+    private Context context;
 
     public MyDB(Context context){
+        this.context=context;
         mHelper=new DBHelper(context);
     }
 
@@ -41,10 +44,12 @@ public class MyDB {
             db.beginTransaction();
         ContentValues values = new ContentValues();
         values.put(DBHelper.KEY_NAME, user.get_name());
+            values.put(DBHelper.KEY_LAST_NAME, user.get_last_name());
         values.put(DBHelper.KEY_AGE, user.get_age());
 
         // Inserting Row
         db.insert(DBHelper.TABLE_USERS, null, values);
+            db.setTransactionSuccessful();
     }finally {
             db.endTransaction();
             db.close(); // Closing database connection
@@ -77,15 +82,15 @@ public class MyDB {
 
         SQLiteDatabase db = mHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-
+        Toast.makeText(context, " length= "+cursor.getCount(), Toast.LENGTH_LONG).show();
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 Users contact = new Users();
                 contact.set_id(Integer.parseInt(cursor.getString(0)));
-                contact.set_age(Integer.parseInt(cursor.getString(1)));
-                contact.set_name(cursor.getString(2));
-                contact.set_last_name(cursor.getString(3));
+                contact.set_age(Integer.parseInt(cursor.getString(cursor.getColumnIndex(DBHelper.KEY_AGE))));
+                contact.set_name(cursor.getString(cursor.getColumnIndex(DBHelper.KEY_NAME)));
+                contact.set_last_name(cursor.getString(cursor.getColumnIndex(DBHelper.KEY_LAST_NAME)));
                 userList.add(contact);
             } while (cursor.moveToNext());
         }

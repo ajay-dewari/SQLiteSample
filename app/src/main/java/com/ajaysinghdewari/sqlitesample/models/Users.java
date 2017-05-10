@@ -19,6 +19,12 @@ public class Users {
         this._last_name = _last_name;
     }
 
+    public Users(String _name, String _last_name, int age) {
+        this.name = _name;
+        this._last_name = _last_name;
+        this.age=age;
+    }
+
     public int get_id() {
         return id;
     }
