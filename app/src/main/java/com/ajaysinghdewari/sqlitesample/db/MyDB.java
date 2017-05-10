@@ -57,6 +57,28 @@ public class MyDB {
 
     }
 
+    // Adding new user
+    public void addUsers(List<Users> users) {
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        try {
+            db.beginTransaction();
+            for(Users user :users){
+                ContentValues values = new ContentValues();
+                values.put(DBHelper.KEY_NAME, user.get_name());
+                values.put(DBHelper.KEY_LAST_NAME, user.get_last_name());
+                values.put(DBHelper.KEY_AGE, user.get_age());
+
+                // Inserting Row
+                db.insert(DBHelper.TABLE_USERS, null, values);
+            }
+
+            db.setTransactionSuccessful();
+        }finally {
+            db.endTransaction();
+            db.close(); // Closing database connection
+        }
+
+    }
 
     // Getting single user
     public Users getUser(int id) {
